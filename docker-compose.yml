@@ -1,0 +1,43 @@
+version: '2'
+volumes:
+  db_storage_new:
+    driver: local
+
+services:
+  db:
+    image: registry.opensuse.org/opensuse/mariadb:latest
+    restart: always
+    volumes:
+      - db_storage_new:/var/lib/mysql
+    extends:
+      service: base
+      file: docker-compose-base.yml
+
+  rmt:
+    image: registry.opensuse.org/home/kukuk/container/container/opensuse/rmt-server:latest
+    environment:
+      - MYSQL_HOST=db
+      - MYSQL_DATABASE=rmt
+      - MYSQL_USER=rmt
+      - MYSQL_PASSWORD=rmt
+      - MYSQL_ROOT_PASSWORD=toor
+      - SCC_USERNAME=${SCC_USERNAME}
+      - SCC_PASSWORD=${SCC_PASSWORD}
+    volumes:
+      - ./public:/var/lib/rmt/public
+    depends_on:
+      - db
+
+  nginx:
+    image: registry.opensuse.org/opensuse/nginx:latest
+    volumes:
+      - ./public:/usr/share/rmt/public
+      - ./ssl:/etc/rmt/ssl
+      - ./nginx/rmt-server-http.conf:/etc/nginx/vhosts.d/rmt-server-http.conf
+      - ./nginx/rmt-server-https.conf:/etc/nginx/vhosts.d/rmt-server-https.conf
+    ports:
+      - "${EXTERNAL_PORT_HTTP}:80"
+      - "${EXTERNAL_PORT_HTTPS}:443"
+    depends_on:
+      - rmt
+    entrypoint: /bin/bash -c 'nginx -g "daemon off;"'
