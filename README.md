@@ -1,4 +1,4 @@
-# Repository Mirroring Tool
+# Repository Mirroring Tool for Cloud service providers
 
 This tool allows you to mirror RPM repositories in your own private network.
 Organization (mirroring) credentials are required to mirror SUSE repositories.
