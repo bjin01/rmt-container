@@ -1,79 +1,9 @@
 # Repository Mirroring Tool
-[![Build Status](https://travis-ci.org/SUSE/rmt.svg?branch=master)](https://travis-ci.org/SUSE/rmt)
-[![Code Climate](https://codeclimate.com/github/SUSE/rmt.png)](https://codeclimate.com/github/SUSE/rmt)
-[![Coverage Status](https://coveralls.io/repos/SUSE/rmt/badge.svg?branch=master&service=github)](https://coveralls.io/github/SUSE/rmt?branch=master)
 
 This tool allows you to mirror RPM repositories in your own private network.
 Organization (mirroring) credentials are required to mirror SUSE repositories.
 
 End-user documentation can be found in [RMT Guide](https://documentation.suse.com/sles/15-SP1/html/SLES-all/book-rmt.html). `man` pages for `rmt-cli` can be found [here](MANUAL.md).
-
-## Installation on SLE15
-
-1. Activate your instance of SLE15 via `SUSEConnect -r <regcode>`
-2. Activate Server Applications module `SUSEConnect -p sle-module-server-applications/15/x86_64`
-3. Install RMT with YaST installation wizard `zypper in rmt-server yast2-rmt`
-4. Run installation wizard for RMT `yast2 rmt` and configure your instance
-
-## Installation on OpenSUSE Leap 15
-
-1. Install RMT with YaST installation wizard `zypper in rmt-server yast2-rmt`
-2. Run installation wizard for RMT `yast2 rmt` and configure your instance
-
-## Manual installation and configuration
-
-RMT currently gets built for these distributions: `SLE_15`, `SLE_15_SP1`, `openSUSE_Leap_15.0`, `openSUSE_Leap_15.1`, `openSUSE_Tumbleweed`.
-To add the repository, call: (replace `<dist>` with your distribution)
-
-`zypper ar -f https://download.opensuse.org/repositories/systemsmanagement:/SCC:/RMT/<dist>/systemsmanagement:SCC:RMT.repo`
-
-To install RMT, run: `zypper in rmt-server`
-
-After installation configure your RMT instance:
-
-* Prepare the database:
-    * Start MySQL/MariaDB by running `systemctl start mysql`
-    * Set database `root` user password by running `mysqladmin -u root password`
-    * Make sure you can access to the database console as `root` user by running `mysql -u root -p`
-    * Create a MySQL/MariaDB user with the following command:
-    ```
-    mysql -u root -p <<EOFF
-    GRANT ALL PRIVILEGES ON \`rmt\`.* TO rmt@localhost IDENTIFIED BY 'rmt';
-    FLUSH PRIVILEGES;
-    EOFF
-    ```
-* See [RMT Configuration Files](https://www.suse.com/documentation/sles-15/book_rmt/data/sec_rmt_config.html)
-  in the official RMT documentation for information about `/etc/rmt.conf`.
-* Start RMT by running `systemctl start rmt-server`. This will start the RMT server at http://localhost:4224.
-* By default, mirrored repositories are saved under `/usr/share/rmt/public`, which is a symlink that points to
-`/var/lib/rmt/public`. In order to change destination directory, recreate `/usr/share/rmt/public` symlink to point to the
-desired location.
-
-## Dependencies
-
-Supported Ruby versions are 2.5.0 and newer.
-
-## Development setup
-
-* Install the dependencies:
-  * `sudo zypper in libxml2-devel libxslt-devel libmariadb-devel`
-  * `bundle install`
-* Copy the file `config/rmt.yml` to `config/rmt.local.yml` to override the default settings:
-    * Add your organization credentials to `scc` section
-    * Add your MySQL credentials
-
-* Setup MySQL/MariaDB:
-
-* Grant the just configured database user access to your database. The following command will grant access to the default user `rmt` with password `rmt` (run it as root):
-
-```
-mysql -u root <<EOFF
-GRANT ALL PRIVILEGES ON \`rmt%\`.* TO rmt@localhost IDENTIFIED BY 'rmt';
-FLUSH PRIVILEGES;
-EOFF
-```
-* Create databases by running `rails db:create db:migrate`
-* Run `rails server` to run the web-server
 
 
 ### Running with docker-compose
