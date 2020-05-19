@@ -14,7 +14,7 @@ services:
       file: docker-compose-base.yml
 
   rmt:
-    image: registry.opensuse.org/home/kukuk/container/container/opensuse/rmt-server:latest
+    image: registry.opensuse.org/home/bjin01/branches/home/kukuk/container/container/opensuse/rmt-server:latest
     environment:
       - MYSQL_HOST=db
       - MYSQL_DATABASE=rmt
@@ -25,6 +25,7 @@ services:
       - SCC_PASSWORD=${SCC_PASSWORD}
     volumes:
       - ./public:/var/lib/rmt/public
+      - ./providers/example.rb:/usr/share/rmt/engines/instance_verification/lib/instance_verification/providers/example.rb
     depends_on:
       - db
 
@@ -33,8 +34,10 @@ services:
     volumes:
       - ./public:/usr/share/rmt/public
       - ./ssl:/etc/rmt/ssl
-      - ./nginx/rmt-server-http.conf:/etc/nginx/vhosts.d/rmt-server-http.conf
-      - ./nginx/rmt-server-https.conf:/etc/nginx/vhosts.d/rmt-server-https.conf
+      - ./nginx/rmt-server-pubcloud-http.conf:/etc/nginx/vhosts.d/rmt-server-pubcloud-http.conf
+      - ./nginx/rmt-server-pubcloud-https.conf:/etc/nginx/vhosts.d/rmt-server-pubcloud-https.conf
+      - ./nginx/rmt-auth.d/auth-handler.conf:/etc/nginx/rmt-auth.d/auth-handler.conf
+      - ./nginx/rmt-auth.d/auth-location.conf:/etc/nginx/rmt-auth.d/auth-location.conf
     ports:
       - "${EXTERNAL_PORT_HTTP}:80"
       - "${EXTERNAL_PORT_HTTPS}:443"
