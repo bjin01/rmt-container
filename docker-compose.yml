@@ -1,14 +1,13 @@
 version: '2'
-volumes:
-  db_storage_new:
-    driver: local
 
 services:
   db:
     image: registry.opensuse.org/opensuse/mariadb:latest
+    environment:
+      - MYSQL_INITDB_SKIP_TZINFO=1
     restart: always
     volumes:
-      - db_storage_new:/var/lib/mysql
+      - ./mariadb:/var/lib/mysql
     extends:
       service: base
       file: docker-compose-base.yml
@@ -20,13 +19,16 @@ services:
       - MYSQL_DATABASE=rmt
       - MYSQL_USER=rmt
       - MYSQL_PASSWORD=rmt
+      - MYSQL_PWD=toor
       - MYSQL_ROOT_PASSWORD=toor
       - SCC_USERNAME=${SCC_USERNAME}
       - SCC_PASSWORD=${SCC_PASSWORD}
     volumes:
       - ./public:/var/lib/rmt/public
+      - ./rmt-start.sh:/usr/local/bin/rmt-start.sh
     depends_on:
       - db
+    entrypoint: /bin/bash /usr/local/bin/rmt-start.sh
 
   nginx:
     image: registry.opensuse.org/opensuse/nginx:latest
