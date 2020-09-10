@@ -11,6 +11,24 @@ End-user documentation can be found in [RMT Guide](https://documentation.suse.co
 * docker engine installed e.g. zypper in -y docker
 * download and install docker-compose:
     https://docs.docker.com/compose/install/
+    ```
+    sudo curl -L "https://github.com/docker/compose/releases/download/1.27.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    sudo chmod +x /usr/local/bin/docker-compose
+    sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+    docker-compose --version
+    
+    ```
+  __Cautious:__
+  Do not install docker-compose from packagehub for SLES15SP1 as the docker-compose there needs python2 and not python3 which is installed on SLES15 and higher.
+ 
+ __Remarks:__
+ * When mariadb container starts for the first time it will init db and take some time. To avoid failure of rmt container there is a modified entrypoint script to sleep for 20 seconds and then a test db connection will be executed. If db connect was successful then the script will continue.
+ * To keep mariadb init fast the below env parameter is in place and skip timezone table load.
+ ```environment:
+      - MYSQL_INITDB_SKIP_TZINFO=1
+```
+* 
+
 
 __In order to run the application locally using docker-compose:__
 
