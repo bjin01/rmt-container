@@ -22,7 +22,8 @@ End-user documentation can be found in [RMT Guide](https://documentation.suse.co
   Do not install docker-compose from packagehub for SLES15SP1 as the docker-compose there needs python2 and not python3 which is installed on SLES15 and higher.
  
  __Remarks:__
- * When mariadb container starts for the first time it will init db and take some time. To avoid failure of rmt container there is a modified entrypoint script to sleep for 20 seconds and then a test db connection will be executed. If db connect was successful then the script will continue.
+ * When mariadb container starts for the first time it will init db and this process takes some time. To avoid db connect failure of rmt container a modified entrypoint script will sleep for 20 seconds followed by a db connect test. If db connect return is successful then the script will continue. __rmt-start.sh__
+ * feel free to change the sleep time duration for your need.
  * To keep mariadb init fast the below env parameter is in place and skip timezone table load.
  ```environment:
       - MYSQL_INITDB_SKIP_TZINFO=1
