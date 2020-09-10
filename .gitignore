@@ -1,4 +1,4 @@
-ssl/
 config/
+providers/
 repoindex.xml
 .env-real
