@@ -3,8 +3,7 @@
 This tool allows you to mirror RPM repositories in your own private network.
 Organization (mirroring) credentials are required to mirror SUSE repositories.
 
-End-user documentation can be found in [RMT Guide](https://documentation.suse.com/sles/15-SP1/html/SLES-all/book-rmt.html). `man` pages for `rmt-cli` can be found [here](MANUAL.md).
-
+End-user documentation can be found in [RMT Guide](https://documentation.suse.com/sles/15-SP1/html/SLES-all/book-rmt.html).
 
 ### Running with docker-compose
 
@@ -62,14 +61,5 @@ RMT is replacing some functionality of [SMT](https://github.com/SUSE/smt). Follo
 <a name="res">2</a>: RES support is planned for SLES15 SP1  
 <a name="regup">3</a>: Registration data transfer to SCC is planned for SLES15 SP2
 
-## API documentation
-
-RMT partially implements the [SUSE Customer Center API](https://scc.suse.com/connect/v4/documentation). You can read the details of each endpoint to find out whether they are supported by RMT.
-
-## Feedback
-
-Do you have suggestions for improvement? Let us know!
-
-Go to [Issues](https://github.com/SUSE/rmt/issues/new), create a new issue and describe what you think could be improved.
 
 Feedback is always welcome!
