@@ -1,5 +1,5 @@
 #!/bin/sh
-set -e
+#set -e
 # I want to make sure that name resolution is working and pointing to the db instance.
 
 nslookup db
@@ -16,7 +16,7 @@ cat /etc/hosts
 # Therefore I add below delay prior continue.
 echo "wait for 20 seconds to make sure db finished initialization."
 
-sleep 20
+#sleep 20
 echo "Test db connection..."
 mysql --host=db --user=root --password=toor -e"quit"
 if [ $? -eq 0 ]

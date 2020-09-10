@@ -1,0 +1,42 @@
+version: '2'
+
+services:
+  db:
+    image: registry.opensuse.org/opensuse/mariadb:latest
+    environment:
+      - MYSQL_INITDB_SKIP_TZINFO=1
+    restart: always
+    volumes:
+      - ./mariadb:/var/lib/mysql
+    extends:
+      service: base
+      file: docker-compose-base.yml
+
+  rmt:
+    image: registry.opensuse.org/home/bjin01/branches/opensuse/templates/images/15.2/images/opensuse/rmt-server:latest
+    environment:
+      - MYSQL_HOST=db
+      - MYSQL_DATABASE=rmt
+      - MYSQL_USER=rmt
+      - MYSQL_PASSWORD=rmt
+      - MYSQL_PWD=toor
+      - MYSQL_ROOT_PASSWORD=toor
+      - SCC_USERNAME=${SCC_USERNAME}
+      - SCC_PASSWORD=${SCC_PASSWORD}
+    volumes:
+      - ./public:/var/lib/rmt/public
+      - ./rmt-start.sh:/usr/local/bin/rmt-start.sh
+    depends_on:
+      - db
+    entrypoint: /bin/bash /usr/local/bin/rmt-start.sh
+
+  nginx:
+    image: registry.opensuse.org/opensuse/nginx:latest
+    volumes:
+      - ./public:/usr/share/rmt/public
+      - ./nginx/rmt-server-http.conf:/etc/nginx/vhosts.d/rmt-server-http.conf
+    ports:
+      - "${EXTERNAL_PORT_HTTP}:80"
+    depends_on:
+      - rmt
+    entrypoint: /bin/bash -c 'nginx -g "daemon off;"'
