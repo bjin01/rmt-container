@@ -35,7 +35,7 @@ Although [SUSE CaasP](https://www.suse.com/products/caas-platform/) is the right
  environment:
       - MYSQL_INITDB_SKIP_TZINFO=1
 ```
-* __ssl__ - this subdirectory is needed. Place your self-signed CA and rmt ssl certificate into here otherwise nginx container will fail to start. If you don't need https connection then you have to use docker-compose-without-ssl.yml file or rename this file to docker-compose.yml
+* __ssl__ - this subdirectory is needed. Place your self-signed CA and rmt ssl certificate into here otherwise nginx container will fail to start. If you don't need https connection then you have to use docker-compose-without-ssl.yml file or rename this file to docker-compose.yml. If you need a helping hand for generating self-signed ssl certs try [certstrap](https://github.com/square/certstrap)
 * __docker images__ - we use opensuse built nginx, mariadb and rmt docker images. In the rmt image we added bind-utils for getting nslookup command. Changing image is ok but at your own risk. If you like just pull the images before hand:
 ```
 docker pull registry.opensuse.org/home/bjin01/branches/opensuse/templates/images/15.2/images/opensuse/rmt-server:latest
