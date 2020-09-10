@@ -6,8 +6,13 @@ Organization (mirroring) credentials are required to mirror SUSE repositories.
 End-user documentation can be found in [RMT Guide](https://documentation.suse.com/sles/15-SP1/html/SLES-all/book-rmt.html).
 
 ### Running with docker-compose
+### Prerequisits:
+* SLES15SP1 or higher
+* docker engine installed e.g. zypper in -y docker
+* download and install docker-compose:
+    https://docs.docker.com/compose/install/
 
-In order to run the application locally using docker-compose:
+__In order to run the application locally using docker-compose:__
 
 1. Copy `.env.example` file to `.env`;
 2. Add your organization credentials to `.env` file. Mirroring credentials can be obtained from the [SUSE Customer Center](https://scc.suse.com/organization);
@@ -17,11 +22,8 @@ In order to run the application locally using docker-compose:
     docker-compose exec rmt rmt-cli repos --help
     ```
     Alternatively, running `docker-compose exec rmt bash` will start the shell inside the container.
-5. The web server will be accessible at [http://localhost:8080/](http://localhost:8080/), this URL can be used for registering clients.
-
-## Is it any good?
-
-[Yes.](https://news.ycombinator.com/item?id=3067434)
+5. The web server will be accessible at [http://your-host-fqdn-or-ip](http://your-host-fqdn-or-ip/), this URL can be used for registering clients.
+6. To test if repo is accessible open this url: http://your-host-fqdn-or-ip/repo you should see directory browsing which is empty as long as you have not synced any repo via scc.suse.com
 
 ## RMT and SMT
 
