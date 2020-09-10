@@ -16,7 +16,6 @@ End-user documentation can be found in [RMT Guide](https://documentation.suse.co
     sudo chmod +x /usr/local/bin/docker-compose
     sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
     docker-compose --version
-    
     ```
   __Cautious:__
   Do not install docker-compose from packagehub for SLES15SP1 as the docker-compose there needs python2 and not python3 which is installed on SLES15 and higher.
@@ -25,11 +24,11 @@ End-user documentation can be found in [RMT Guide](https://documentation.suse.co
  * When mariadb container starts for the first time it will init db and this process takes some time. To avoid db connect failure of rmt container a modified entrypoint script will sleep for 20 seconds followed by a db connect test. If db connect return is successful then the script will continue. __rmt-start.sh__
  * feel free to change the sleep time duration for your need.
  * To keep mariadb init fast the below env parameter is in place and skip timezone table load.
- ```environment:
+ ```
+ environment:
       - MYSQL_INITDB_SKIP_TZINFO=1
 ```
-* 
-
+* __ssl__ - this subdirectory is needed. Place your self-signed CA and rmt ssl certificate into here otherwise nginx container will fail to start. If you don't need https connection then you have to use docker-compose-without-ssl.yml file or rename this file to docker-compose.yml
 
 __In order to run the application locally using docker-compose:__
 
